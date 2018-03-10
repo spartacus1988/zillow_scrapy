@@ -30,8 +30,13 @@ if __name__ == "__main__":
 
 	ZillowSpider = scrapy_class.ZillowSpider(links)
 
-	print(ZillowSpider.name)
-	print(ZillowSpider.start_urls)
+	ZillowSpider.start_requests()
+	#ZillowSpider.parse(links)
+
+
+
+	#print(ZillowSpider.name)
+	#print(ZillowSpider.start_urls)
 
 	#print(links)
 
