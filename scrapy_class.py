@@ -39,24 +39,23 @@ class ZillowSpider:
 
 
 
-	def get_zestimate(self, soup_obj):
-		#with open("file.txt", "w") as file:
-			#print(soup_obj, file=file)
-		#print(soup_obj)
-		zestimate = soup_obj.find("div", {"class" : "zestimate-value"})#.get_text().strip()
-		print(zestimate)
-		try:
-			zestimate = soup_obj.find("div", {"class" : "main-row  home-summary-row"}).get_text().strip()
-			print(zestimate)
-			zestimate = soup_obj.find("div", class_="zestimate-value")#.get_text().strip()
-			print(zestimate)
-			zestimate = soup_obj.findAll("div", {"class": "zestimate-value"})
-			print(zestimate)
-		except (ValueError, AttributeError):
-			zestimate = "NA"
-		if self._is_empty(zestimate):
-			zestimate = "NA"
-		return(zestimate)
+	def get_zestimate(self, browser, url):
+
+		browser.get(url)
+
+		elm = browser.find_element_by_id('homeValue')
+		#browser.implicitly_wait(2)
+		elm.click()
+
+		element_text = elm.text
+		# print(element_text)
+		# print(type(element_text))
+		# print(element_text.split())
+		# print(element_text.split()[3])
+		# print(element_text.split()[6] + element_text.split()[7] + element_text.split()[8])
+		zestimate = element_text.split()[3]
+		zRange = str(element_text.split()[6] + element_text.split()[7] + element_text.split()[8])
+		return zestimate , zRange
 
 
 
