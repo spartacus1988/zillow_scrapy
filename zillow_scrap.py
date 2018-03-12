@@ -33,57 +33,17 @@ if __name__ == "__main__":
 	#browser.implicitly_wait(15)
 
 	
-	#zestimate , zRange = ZillowSpider.get_zestimate(browser, links[0])
-	#print("zestimate: " + zestimate)
-	#print("zRange: " + zRange)
+	zestimate , zRange, builtIn, builtBy, comName, parking = ZillowSpider.get_one_request(browser, links[0])
+	print("zestimate: " + zestimate)
+	print("zRange: " + zRange)
+	print("builtIn: " + builtIn)
+	print("builtBy: " + builtBy)
+	print("comName: " + comName)
+	print("parking: " + parking)
 
 
-	browser.get(links[0])
-	elm = browser.find_element_by_xpath("//*[@class='hdp-facts zsg-content-component']") 
-	element_text = elm.text.split('\n')
+	
 
-	print(element_text)
-
-	# for str in element_text:
-	# 	if "Built in" in str:
-	# 		print("Built in: " + str.split()[2])
-	# 	if "Built by" in str:
-	# 		print("Built by: " + str.split()[2] + " " + str.split()[3])
-	# 	if "Community name " in str:
-	# 		print("Community name: " + str.split()[2])
-	# 	if "Parking" in str:
-	# 		print("Parking: " + str.split()[2] + " " + str.split()[3])
-
-
-
-	for str in element_text:
-		if "Built in" in str:
-			str = str.replace("Built in",'')
-			print("Built in: " + str)
-		if "Built by" in str:
-			str = str.replace("Built by:",'')
-			print("Built by: " + str)
-		if "Community name" in str:
-			str = str.replace("Community name:",'')
-			print("Community name: " + str)
-		if "Parking" in str:
-			str = str.replace("Parking:",'')
-			print("Parking: " + str)
-
-
-
-
-
-
-
-
-
-	# print(type(element_text))
-	# print(element_text.split())
-	# print(element_text.split()[3])
-	# print(element_text.split()[6] + element_text.split()[7] + element_text.split()[8])
-	#zestimate = element_text.split()[3]
-	#zRange = str(element_text.split()[6] + element_text.split()[7] + element_text.split()[8])
 
 
 

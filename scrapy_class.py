@@ -16,15 +16,7 @@ class ZillowSpider:
 
 	def init_driver(file_path):
 		options = Options()
-		#options.add_experimental_option("excludeSwitches",["ignore-certificate-errors"])
-		#options.add_argument("--start-maximized")
-		#options.add_argument("allow-running-insecure-content")
-		#options.add_argument("test-type")
-
 		#options.add_argument("--headless")
-
-		#options.add_argument("--disable-gpu") 
-
 		browser = webdriver.Chrome('/usr/local/bin/chromedriver', chrome_options=options)	
 
 		browser.wait = WebDriverWait(browser, 10)
@@ -39,27 +31,50 @@ class ZillowSpider:
 
 
 
-	def get_zestimate(self, browser, url):
+	def get_one_request(self, browser, url):
+		zestimate = None
+		zRange = None
+		builtIn = None
+		builtBy = None
+		comName = None
+		parking = None
 
 		browser.get(url)
 
 		elm = browser.find_element_by_id('homeValue')
-		#browser.implicitly_wait(2)
 		elm.click()
-
 		element_text = elm.text
-		# print(element_text)
-		# print(type(element_text))
-		# print(element_text.split())
-		# print(element_text.split()[3])
-		# print(element_text.split()[6] + element_text.split()[7] + element_text.split()[8])
 		zestimate = element_text.split()[3]
 		zRange = str(element_text.split()[6] + element_text.split()[7] + element_text.split()[8])
-		return zestimate , zRange
+
+		elm = browser.find_element_by_xpath("//*[@class='hdp-facts zsg-content-component']") 
+		element_text = elm.text.split('\n')
+
+		for strIng in element_text:
+			if "Built in" in strIng:
+				strIng = strIng.replace("Built in",'')
+				#print("Built in: " + str)
+				builtIn = strIng
+			if "Built by" in strIng:
+				strIng = strIng.replace("Built by:",'')
+				#print("Built by: " + str)
+				builtBy = strIng
+			if "Community name" in strIng:
+				strIng = strIng.replace("Community name:",'')
+				#print("Community name: " + str)
+				comName = strIng
+			if "Parking" in strIng:
+				strIng = strIng.replace("Parking:",'')
+				#print("Parking: " + str)
+				parking = strIng
+
+		return zestimate , zRange, builtIn, builtBy, comName, parking
 
 
 
-	def get_one_request(self, browser, url):
+
+
+	def get_one_requests(self, browser, url):
 
 		browser.get(url)
 
