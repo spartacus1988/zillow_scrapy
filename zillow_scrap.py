@@ -1,7 +1,7 @@
 import csv
 import scrapy_class
 from bs4 import BeautifulSoup
-#from lxml import etree
+
 
 
 def csv_reader(file_obj):
@@ -32,17 +32,22 @@ if __name__ == "__main__":
 	browser = ZillowSpider.init_driver()
 	#browser.implicitly_wait(15)
 
-	
-	zestimate , zRange, builtIn, builtBy, comName, parking = ZillowSpider.get_one_request(browser, links[0])
-	print("zestimate: " + zestimate)
-	print("zRange: " + zRange)
-	print("builtIn: " + builtIn)
-	print("builtBy: " + builtBy)
-	print("comName: " + comName)
-	print("parking: " + parking)
 
 
-	
+	#####https://www.zillow.com/homes/for_sale//homedetails/295-N-Minnewawa-Ave-Fresno-CA-93727/18759515_zpid/
+
+	for url in links:	
+		#zestimate , zRange, builtIn, builtBy, comName, parking = ZillowSpider.get_one_request(browser, "https://www.zillow.com/homes/for_sale//homedetails/295-N-Minnewawa-Ave-Fresno-CA-93727/18759515_zpid/")
+		zestimate , zRange, builtIn, builtBy, comName, parking = ZillowSpider.get_one_request(browser, url)
+		print("zestimate: " + zestimate)
+		print("zRange: " + zRange)
+		print("builtIn: " + builtIn)
+		print("builtBy: " + builtBy)
+		print("comName: " + comName)
+		print("parking: " + parking)
+		#break
+
+		
 
 
 

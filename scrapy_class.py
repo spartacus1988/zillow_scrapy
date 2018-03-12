@@ -1,11 +1,10 @@
-#import json
-#import requests
+
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 
-#from selenium.common.exceptions import TimeoutException
+
 
 
 class ZillowSpider:
@@ -32,18 +31,52 @@ class ZillowSpider:
 
 
 	def get_one_request(self, browser, url):
-		zestimate = None
-		zRange = None
-		builtIn = None
-		builtBy = None
-		comName = None
-		parking = None
+		zestimate = "NA"
+		zRange = "NA"
+		builtIn = "NA"
+		builtBy = "NA"
+		comName = "NA"
+		parking = "NA"
 
 		browser.get(url)
+		browser.implicitly_wait(1)
 
-		elm = browser.find_element_by_id('homeValue')
+		try:
+			elm = browser.find_element_by_id('homeValue')
+			#elm = browser.find_element_by_id('home-details-module-zone')
+			
+
+		except:
+			print("Other disign page")
+			#####https://www.zillow.com/homes/for_sale//homedetails/295-N-Minnewawa-Ave-Fresno-CA-93727/18759515_zpid/
+			#####https://www.zillow.com/homes/for_sale/2094098284_zpid/globalrelevanceex_sort/29.783524,-95.363388,29.650838,-95.474968_rect/12_zm/
+
+			elm = browser.find_element_by_id('zestimate-details')
+			elm.click()
+			element_text = elm.text
+			#print(element_text.split())
+			#print(element_text)
+			zestimate = element_text.split()[3]
+			zRange = str(element_text.split()[6] + element_text.split()[7] + element_text.split()[8])
+			#print("zestimate: " + zestimate)
+			#print("zRange: " + zRange)
+
+			elm = browser.find_element_by_xpath("//*[@class='hdp-facts-expandable-container clear']") 
+			element_text = elm.text.split('\n')
+			#print(element_text)
+
+			builtIn = element_text[4]
+			builtBy = "NA"
+			comName = element_text[2]
+			parking = element_text[10]
+
+			return zestimate , zRange, builtIn, builtBy, comName, parking
+
+
+
 		elm.click()
 		element_text = elm.text
+		#print(element_text.split())
 		zestimate = element_text.split()[3]
 		zRange = str(element_text.split()[6] + element_text.split()[7] + element_text.split()[8])
 
@@ -74,18 +107,10 @@ class ZillowSpider:
 
 
 
-	def get_one_requests(self, browser, url):
-
-		browser.get(url)
-
-		html = browser.page_source
-		soup = BeautifulSoup(html, "lxml")
-		#print(soup)
-		#for tag in soup.find_all('title'):
-			#print(tag.text)
-
-		zestimate = self.get_zestimate(soup)
-		print(zestimate)
 
 
-		#browser.quit()
+
+
+
+
+
