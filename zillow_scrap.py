@@ -38,47 +38,46 @@ if __name__ == "__main__":
 	#print("zRange: " + zRange)
 
 
-
-
 	browser.get(links[0])
-
-	#elm = browser.find_elements_by_xpath('//div[contains(text(), "' + Facts + '")]')
-	#elm = browser.find_element_by_css_selector('fact-group-container zsg-content-component top-facts')
-	#elm = browser.find_element_by_tag_name('h3')
-	#elm = browser.find_element_by_class_name('fact-group-container zsg-content-component top-facts')
-	#elm = browser.find_element_by_css_selector(".fact-group-container zsg-content-component top-facts")
-	#elm = browser.find_element_by_id('yui_3_18_1_1_1520845064328_9721')
-
-	#elm = browser.find_element_by_xpath("//*[@class='fact-group-container zsg-content-component top-facts']") 
-
-
-	#elm = browser.find_element_by_xpath("//*[@class='zsg-content_collapsed zsg-h4']") 
-
-
-	#elm = browser.find_element_by_xpath("//*[@class='zsg-list_square zsg-lg-1-3 zsg-md-1-2 zsg-sm-1-1']") 
-
-	#elm = browser.find_element_by_css_selector('ul.zsg-list_square zsg-lg-1-3 zsg-md-1-2 zsg-sm-1-1')
-
-
-	#elm = browser.find_element_by_xpath("//*[@class='fact-group-container zsg-content-component top-facts']//*[@class='zsg-list_square zsg-lg-1-3 zsg-md-1-2 zsg-sm-1-1']") 
-
-	#elm = browser.find_element_by_css_selector('div.fact-group-container zsg-content-component top-facts')
-
-	#elm = browser.find_element_by_xpath("//*[@class='fact-group-container zsg-content-component top-facts']") 
-
 	elm = browser.find_element_by_xpath("//*[@class='hdp-facts zsg-content-component']") 
+	element_text = elm.text.split('\n')
 
-
-
-
-	
-
-	
-	#browser.implicitly_wait(2)
-	#elm.click()
-
-	element_text = elm.text
 	print(element_text)
+
+	# for str in element_text:
+	# 	if "Built in" in str:
+	# 		print("Built in: " + str.split()[2])
+	# 	if "Built by" in str:
+	# 		print("Built by: " + str.split()[2] + " " + str.split()[3])
+	# 	if "Community name " in str:
+	# 		print("Community name: " + str.split()[2])
+	# 	if "Parking" in str:
+	# 		print("Parking: " + str.split()[2] + " " + str.split()[3])
+
+
+
+	for str in element_text:
+		if "Built in" in str:
+			str = str.replace("Built in",'')
+			print("Built in: " + str)
+		if "Built by" in str:
+			str = str.replace("Built by:",'')
+			print("Built by: " + str)
+		if "Community name" in str:
+			str = str.replace("Community name:",'')
+			print("Community name: " + str)
+		if "Parking" in str:
+			str = str.replace("Parking:",'')
+			print("Parking: " + str)
+
+
+
+
+
+
+
+
+
 	# print(type(element_text))
 	# print(element_text.split())
 	# print(element_text.split()[3])
