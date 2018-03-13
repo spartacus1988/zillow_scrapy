@@ -85,6 +85,53 @@ class ZillowSpider:
 				self.check_for_captcha(browser)
 				return zestimate , zRange, builtIn, builtBy, comName, parking
 
+
+			try:
+				elm.click()
+				element_text = elm.text.split()
+				#print(element_text.split())
+				#print(element_text)
+
+				try:
+					listIndex = element_text.index("Zestimate")
+					#print(listIndex)
+					#print(listIndex)
+					#zestimate = element_text.split()[3]
+					zestimate = element_text[listIndex+1]
+					if zestimate == "for":
+						#print("for")
+						element_text = element_text[listIndex+1:]
+						#print(listt)
+
+						listIndex = element_text.index("Zestimate")
+						#print(listIndex)
+						zestimate = element_text[listIndex+1]
+						#print(zestimate)
+
+					listIndex = element_text.index("RANGE")
+					#zRange = str(element_text.split()[6] + element_text.split()[7] + element_text.split()[8])
+					zRange = element_text[listIndex+1] + element_text[listIndex+2] + element_text[listIndex+3]
+				except:
+					zestimate = "NA"
+
+			
+
+				
+
+				elm = browser.find_element_by_xpath("//*[@class='hdp-facts-expandable-container clear']") 
+				element_text = elm.text.split('\n')
+				#print(element_text)
+
+				builtIn = element_text[4]
+				builtBy = "NA"
+				comName = element_text[2]
+				parking = element_text[10]
+
+				return zestimate , zRange, builtIn, builtBy, comName, parking
+			except:
+				return zestimate , zRange, builtIn, builtBy, comName, parking
+
+		try:
 			elm.click()
 			element_text = elm.text.split()
 			#print(element_text.split())
@@ -97,14 +144,14 @@ class ZillowSpider:
 				#zestimate = element_text.split()[3]
 				zestimate = element_text[listIndex+1]
 				if zestimate == "for":
-					#print("for")
-					element_text = element_text[listIndex+1:]
-					#print(listt)
+						#print("for")
+						element_text = element_text[listIndex+1:]
+						#print(listt)
 
-					listIndex = element_text.index("Zestimate")
-					#print(listIndex)
-					zestimate = element_text[listIndex+1]
-					#print(zestimate)
+						listIndex = element_text.index("Zestimate")
+						#print(listIndex)
+						zestimate = element_text[listIndex+1]
+						#print(zestimate)
 
 				listIndex = element_text.index("RANGE")
 				#zRange = str(element_text.split()[6] + element_text.split()[7] + element_text.split()[8])
@@ -112,81 +159,38 @@ class ZillowSpider:
 			except:
 				zestimate = "NA"
 
+			
+					
 		
 
-			
+				
+			#print("zestimate: " + zestimate)
+			#print("zRange: " + zRange)
 
-			elm = browser.find_element_by_xpath("//*[@class='hdp-facts-expandable-container clear']") 
+			elm = browser.find_element_by_xpath("//*[@class='hdp-facts zsg-content-component']") 
 			element_text = elm.text.split('\n')
-			#print(element_text)
 
-			builtIn = element_text[4]
-			builtBy = "NA"
-			comName = element_text[2]
-			parking = element_text[10]
+			for strIng in element_text:
+				if "Built in" in strIng:
+					strIng = strIng.replace("Built in",'')
+					#print("Built in: " + str)
+					builtIn = strIng
+				if "Built by" in strIng:
+					strIng = strIng.replace("Built by:",'')
+					#print("Built by: " + str)
+					builtBy = strIng
+				if "Community name" in strIng:
+					strIng = strIng.replace("Community name:",'')
+					#print("Community name: " + str)
+					comName = strIng
+				if "Parking" in strIng:
+					strIng = strIng.replace("Parking:",'')
+					#print("Parking: " + str)
+					parking = strIng
 
 			return zestimate , zRange, builtIn, builtBy, comName, parking
-
-
-
-		elm.click()
-		element_text = elm.text.split()
-		#print(element_text.split())
-		#print(element_text)
-
-		try:
-			listIndex = element_text.index("Zestimate")
-			#print(listIndex)
-			#print(listIndex)
-			#zestimate = element_text.split()[3]
-			zestimate = element_text[listIndex+1]
-			if zestimate == "for":
-					#print("for")
-					element_text = element_text[listIndex+1:]
-					#print(listt)
-
-					listIndex = element_text.index("Zestimate")
-					#print(listIndex)
-					zestimate = element_text[listIndex+1]
-					#print(zestimate)
-
-			listIndex = element_text.index("RANGE")
-			#zRange = str(element_text.split()[6] + element_text.split()[7] + element_text.split()[8])
-			zRange = element_text[listIndex+1] + element_text[listIndex+2] + element_text[listIndex+3]
 		except:
-			zestimate = "NA"
-
-		
-				
-	
-
-			
-		#print("zestimate: " + zestimate)
-		#print("zRange: " + zRange)
-
-		elm = browser.find_element_by_xpath("//*[@class='hdp-facts zsg-content-component']") 
-		element_text = elm.text.split('\n')
-
-		for strIng in element_text:
-			if "Built in" in strIng:
-				strIng = strIng.replace("Built in",'')
-				#print("Built in: " + str)
-				builtIn = strIng
-			if "Built by" in strIng:
-				strIng = strIng.replace("Built by:",'')
-				#print("Built by: " + str)
-				builtBy = strIng
-			if "Community name" in strIng:
-				strIng = strIng.replace("Community name:",'')
-				#print("Community name: " + str)
-				comName = strIng
-			if "Parking" in strIng:
-				strIng = strIng.replace("Parking:",'')
-				#print("Parking: " + str)
-				parking = strIng
-
-		return zestimate , zRange, builtIn, builtBy, comName, parking
-
+				return zestimate , zRange, builtIn, builtBy, comName, parking
 
 
 
