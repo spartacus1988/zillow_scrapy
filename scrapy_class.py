@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
+import time
 
 
 
@@ -29,6 +30,36 @@ class ZillowSpider:
 			return(False)
 
 
+	def _is_element_displayed(self, browser, elem_text, elem_type):
+		if elem_type == "class":
+			try:
+				out = browser.find_element_by_class_name(elem_text).is_displayed()
+			except (NoSuchElementException, TimeoutException):
+				out = False
+		elif elem_type == "css":
+			try:
+				out = browser.find_element_by_css_selector(elem_text).is_displayed()
+			except (NoSuchElementException, TimeoutException):
+				out = False
+		else:
+			raise ValueError("arg 'elem_type' must be either 'class' or 'css'")
+		return(out)
+
+	def check_for_captcha(self, browser):
+		if self._is_element_displayed(browser, "captcha-container", "class"):
+			print("\nCAPTCHA!\n"\
+				  "Manually complete the captcha requirements.\n"\
+				  "Once that's done, if the program was in the middle of scraping "\
+				  "(and is still running), it should resume scraping after ~30 seconds.")
+			self._pause_for_captcha(browser)
+
+
+	def _pause_for_captcha(self, browser):
+		while True:
+			time.sleep(30)
+			if not self._is_element_displayed(browser, "captcha-container", "class"):
+				break
+
 
 	def get_one_request(self, browser, url):
 		zestimate = "NA"
@@ -47,11 +78,17 @@ class ZillowSpider:
 			
 
 		except:
-			print("Other disign page")
+			#print("Other disign page")
 			#####https://www.zillow.com/homes/for_sale//homedetails/295-N-Minnewawa-Ave-Fresno-CA-93727/18759515_zpid/
 			#####https://www.zillow.com/homes/for_sale/2094098284_zpid/globalrelevanceex_sort/29.783524,-95.363388,29.650838,-95.474968_rect/12_zm/
 
-			elm = browser.find_element_by_id('zestimate-details')
+			try:
+				elm = browser.find_element_by_id('zestimate-details')
+			except:
+				print("Other disign page")
+				self.check_for_captcha(browser)
+				return zestimate , zRange, builtIn, builtBy, comName, parking
+
 			elm.click()
 			element_text = elm.text
 			#print(element_text.split())
