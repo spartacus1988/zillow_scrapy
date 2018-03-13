@@ -9,11 +9,7 @@ import time
 
 
 class ZillowSpider:
-	def __init__(self, links):
-		self.links = links
-  
-
-
+	
 	def init_driver(file_path):
 		options = Options()
 		#options.add_argument("--headless")
@@ -85,19 +81,19 @@ class ZillowSpider:
 			try:
 				elm = browser.find_element_by_id('zestimate-details')
 			except:
-				print("Other disign page")
+				#print("Other disign page")
 				self.check_for_captcha(browser)
 				return zestimate , zRange, builtIn, builtBy, comName, parking
 
 			elm.click()
 			element_text = elm.text.split()
 			#print(element_text.split())
-			print(element_text)
+			#print(element_text)
 
 			try:
 				listIndex = element_text.index("Zestimate")
-				print(listIndex)
-				print(listIndex)
+				#print(listIndex)
+				#print(listIndex)
 				#zestimate = element_text.split()[3]
 				zestimate = element_text[listIndex+1]
 				if zestimate == "for":
@@ -136,12 +132,12 @@ class ZillowSpider:
 		elm.click()
 		element_text = elm.text.split()
 		#print(element_text.split())
-		print(element_text)
+		#print(element_text)
 
 		try:
 			listIndex = element_text.index("Zestimate")
-			print(listIndex)
-			print(listIndex)
+			#print(listIndex)
+			#print(listIndex)
 			#zestimate = element_text.split()[3]
 			zestimate = element_text[listIndex+1]
 			if zestimate == "for":

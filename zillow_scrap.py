@@ -1,6 +1,8 @@
 import csv
 import scrapy_class
 from bs4 import BeautifulSoup
+import pandas as pd
+import time
 
 
 
@@ -9,13 +11,65 @@ def csv_reader(file_obj):
 	reader = csv.reader(file_obj)
 
 	for row in reader:
-		#print(" ".join(row))
-		#print(row[10])
-		#links.insert(0, row[10])
 		links.append(row[10])
-		#links.pop(0)
 	links = links[1:]
 	return links
+
+
+def update_csv_cell(ZillowSpider, browser):
+
+	filepath = "2018-03-09_162252.csv"
+
+	
+
+	with open(filepath, 'r+') as csvfile:
+		reader = csv.reader(csvfile)
+		lines = []
+		i=0
+
+		for current_line in reader:
+			#print(current_line)
+			# i+=1
+			# if i == 4:
+			# 	break
+
+			if current_line[10] == 'url':
+				print(current_line)
+				#current_line.append('zestimate' , 'zRange', 'builtIn', 'builtBy', 'comName', 'parking')
+				current_line.append('zestimate')
+				current_line.append('zRange')
+				current_line.append('builtIn')
+				current_line.append('builtBy')
+				current_line.append('comName')
+				current_line.append('parking')
+
+				print(current_line)
+				lines.append(current_line)
+			else:
+				zestimate , zRange, builtIn, builtBy, comName, parking = ZillowSpider.get_one_request(browser, current_line[10])
+				print(current_line)
+				#current_line.append(zestimate , zRange, builtIn, builtBy, comName, parking)
+				current_line.append(zestimate)
+				current_line.append(zRange)
+				current_line.append(builtIn)
+				current_line.append(builtBy)
+				current_line.append(comName)
+				current_line.append(parking)
+				print(current_line)		
+				lines.append(current_line)
+
+		#csvfile.seek(0)
+		#csv.writer(csvfile).writerows(lines)
+		#csvfile.truncate()
+
+
+
+	# Write data to data frame, then to CSV file.
+	file_name = "%s_%s.csv" % (str(time.strftime("%Y-%m-%d")),
+                           str(time.strftime("%H%M%S")))
+	columns = ["address", "city", "state", "zip", "price", "sqft", "bedrooms",
+           "bathrooms", "days_on_zillow", "sale_type", "url", "zestimate", "zRange", "builtIn", "builtBy", "comName", "parking"]
+	pd.DataFrame(lines, columns = columns).to_csv(file_name, index = False)
 
 
 
@@ -23,29 +77,26 @@ def csv_reader(file_obj):
 
 if __name__ == "__main__":
 
-	csv_path = "2018-03-09_162252.csv"
-	with open(csv_path, "r") as f_obj:
-		links = csv_reader(f_obj)
+	# csv_path = "2018-03-09_162252.csv"
+	# with open(csv_path, "r") as f_obj:
+	# 	links = csv_reader(f_obj)
 
 
-	ZillowSpider = scrapy_class.ZillowSpider(links)
+	ZillowSpider = scrapy_class.ZillowSpider()
 	browser = ZillowSpider.init_driver()
-	#browser.implicitly_wait(15)
+
+	update_csv_cell(ZillowSpider, browser)
 
 
-
-	#####https://www.zillow.com/homes/for_sale//homedetails/295-N-Minnewawa-Ave-Fresno-CA-93727/18759515_zpid/
-
-	for url in links:	
-		#zestimate , zRange, builtIn, builtBy, comName, parking = ZillowSpider.get_one_request(browser, "https://www.zillow.com/homes/for_sale//homedetails/295-N-Minnewawa-Ave-Fresno-CA-93727/18759515_zpid/")
-		zestimate , zRange, builtIn, builtBy, comName, parking = ZillowSpider.get_one_request(browser, url)
-		print("zestimate: " + zestimate)
-		print("zRange: " + zRange)
-		print("builtIn: " + builtIn)
-		print("builtBy: " + builtBy)
-		print("comName: " + comName)
-		print("parking: " + parking)
-		#break
+	# for url in links:	
+	# 	zestimate , zRange, builtIn, builtBy, comName, parking = ZillowSpider.get_one_request(browser, url)
+	# 	print("zestimate: " + zestimate)
+	# 	print("zRange: " + zRange)
+	# 	print("builtIn: " + builtIn)
+	# 	print("builtBy: " + builtBy)
+	# 	print("comName: " + comName)
+	# 	print("parking: " + parking)
+	# 	#break
 
 		
 
