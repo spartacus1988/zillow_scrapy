@@ -100,6 +100,15 @@ class ZillowSpider:
 				print(listIndex)
 				#zestimate = element_text.split()[3]
 				zestimate = element_text[listIndex+1]
+				if zestimate == "for":
+					#print("for")
+					element_text = element_text[listIndex+1:]
+					#print(listt)
+
+					listIndex = element_text.index("Zestimate")
+					#print(listIndex)
+					zestimate = element_text[listIndex+1]
+					#print(zestimate)
 
 				listIndex = element_text.index("RANGE")
 				#zRange = str(element_text.split()[6] + element_text.split()[7] + element_text.split()[8])
@@ -107,11 +116,7 @@ class ZillowSpider:
 			except:
 				zestimate = "NA"
 
-			try:
-				listIndex = element_text.index("Zestimate"[ listIndex[ len(element_text)]])
-				print(listIndex)
-			except:
-				pass
+		
 
 			
 
@@ -139,6 +144,15 @@ class ZillowSpider:
 			print(listIndex)
 			#zestimate = element_text.split()[3]
 			zestimate = element_text[listIndex+1]
+			if zestimate == "for":
+					#print("for")
+					element_text = element_text[listIndex+1:]
+					#print(listt)
+
+					listIndex = element_text.index("Zestimate")
+					#print(listIndex)
+					zestimate = element_text[listIndex+1]
+					#print(zestimate)
 
 			listIndex = element_text.index("RANGE")
 			#zRange = str(element_text.split()[6] + element_text.split()[7] + element_text.split()[8])
@@ -146,11 +160,7 @@ class ZillowSpider:
 		except:
 			zestimate = "NA"
 
-		try:
-			listIndex = element_text.index("Zestimate"[ listIndex[ len(element_text)]])
-			print(listIndex)
-		except:
-			pass
+		
 				
 	
 
