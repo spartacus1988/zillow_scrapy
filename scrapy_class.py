@@ -34,7 +34,7 @@ class ZillowSpider:
 		if elem_type == "class":
 			try:
 				out = browser.find_element_by_class_name(elem_text).is_displayed()
-			except (NoSuchElementException, TimeoutException):
+			except:
 				out = False
 		elif elem_type == "css":
 			try:
@@ -90,13 +90,30 @@ class ZillowSpider:
 				return zestimate , zRange, builtIn, builtBy, comName, parking
 
 			elm.click()
-			element_text = elm.text
+			element_text = elm.text.split()
 			#print(element_text.split())
-			#print(element_text)
-			zestimate = element_text.split()[3]
-			zRange = str(element_text.split()[6] + element_text.split()[7] + element_text.split()[8])
-			#print("zestimate: " + zestimate)
-			#print("zRange: " + zRange)
+			print(element_text)
+
+			try:
+				listIndex = element_text.index("Zestimate")
+				print(listIndex)
+				print(listIndex)
+				#zestimate = element_text.split()[3]
+				zestimate = element_text[listIndex+1]
+
+				listIndex = element_text.index("RANGE")
+				#zRange = str(element_text.split()[6] + element_text.split()[7] + element_text.split()[8])
+				zRange = element_text[listIndex+1] + element_text[listIndex+2] + element_text[listIndex+3]
+			except:
+				zestimate = "NA"
+
+			try:
+				listIndex = element_text.index("Zestimate"[ listIndex[ len(element_text)]])
+				print(listIndex)
+			except:
+				pass
+
+			
 
 			elm = browser.find_element_by_xpath("//*[@class='hdp-facts-expandable-container clear']") 
 			element_text = elm.text.split('\n')
@@ -112,10 +129,34 @@ class ZillowSpider:
 
 
 		elm.click()
-		element_text = elm.text
+		element_text = elm.text.split()
 		#print(element_text.split())
-		zestimate = element_text.split()[3]
-		zRange = str(element_text.split()[6] + element_text.split()[7] + element_text.split()[8])
+		print(element_text)
+
+		try:
+			listIndex = element_text.index("Zestimate")
+			print(listIndex)
+			print(listIndex)
+			#zestimate = element_text.split()[3]
+			zestimate = element_text[listIndex+1]
+
+			listIndex = element_text.index("RANGE")
+			#zRange = str(element_text.split()[6] + element_text.split()[7] + element_text.split()[8])
+			zRange = element_text[listIndex+1] + element_text[listIndex+2] + element_text[listIndex+3]
+		except:
+			zestimate = "NA"
+
+		try:
+			listIndex = element_text.index("Zestimate"[ listIndex[ len(element_text)]])
+			print(listIndex)
+		except:
+			pass
+				
+	
+
+			
+		#print("zestimate: " + zestimate)
+		#print("zRange: " + zRange)
 
 		elm = browser.find_element_by_xpath("//*[@class='hdp-facts zsg-content-component']") 
 		element_text = elm.text.split('\n')
