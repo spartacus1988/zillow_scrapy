@@ -112,12 +112,87 @@ class ZillowSpider:
 		#####https://www.zillow.com/homes/for_sale/2094098284_zpid/globalrelevanceex_sort/29.783524,-95.363388,29.650838,-95.474968_rect/12_zm/
 
 		try:
+			elm = browser.find_element_by_xpath("//*[@class='hdp-fact-moreless-toggle za-track-event']") 
+			elm.click()
+			elm = browser.find_element_by_xpath("//*[@class='z-moreless-content hdp-fact-moreless-content']")		
+			element_text = elm.text.split('\n')
+			#print(element_text)
+
+			# ['INTERIOR FEATURES', 
+			# 'Bedrooms', 'Beds: 4', 
+			# 'Bathrooms', 'Baths: 2 full, 1 half', 
+			# 'Heating and Cooling', 'Heating: Forced air', 'Heating: Electric, Gas', 
+			# 'Cooling: Central, Refrigeration', 
+			# 'Appliances', 'Appliances included: Dishwasher, Dryer, Freezer, Garbage disposal, Microwave, Range / Oven, Refrigerator, Washer', 
+			# 'Flooring', 'Floor size: 2,140 sqft', 'Flooring: Carpet, Hardwood, Tile', 'Other Interior Features', 'Fireplace',
+			#  'Ceiling Fan', 'Room count: 12', 
+			#  'SPACES AND AMENITIES', 
+			#  'Spaces', 'Jetted Tub', 'Basketball Court', 
+			#  'Amenities', 
+			#  'Security System', 
+			#  'CONSTRUCTION', 
+			#  'Type and Style', 
+			#  'Structure type: Other',
+			#   'Single Family', 
+			#   'Materials', 'Roof type: Shake Shingle', 'Exterior material: Stucco', 
+			#   'Dates', 'Last remodel year: 1980', 'Built in 1980', 
+			#   'Other Construction Features', 'Stories: 1', 
+			#   'EXTERIOR FEATURES', 'Yard', 'Lawn', 'Fenced Yard', 'View Type', 
+			#   'View: City', 'Lot', 'Lot: 0.36 acres',
+			#    'Other Exterior Features', 
+			#    'Parcel #: 46222009', 
+			#    'PARKING', 
+			#    'Parking: Carport, On street, Attached Garage, 2 spaces, 450 sqft garage', 
+			#    'RV Parking',
+			#     'UTILITIES', 
+			#    'Cable Ready', 
+			#    'Sprinkler System', 
+			#    'OTHER', 
+			#    'Last sold: Jun 2010 for $220,000',
+			#     'Price/sqft: $145', 'ACTIVITY ON ZILLOW', 
+			#     'Days on Zillow: 132', 'Views in the past 30 days: 3,545',
+			#      '59 shoppers saved this home', 'County websiteSee data sources']
+
+			school = "NA"
+			parking_details = "NA"
+			lastSold = "NA"  
+
+			for strIng in element_text:
+				if "Parking:" in strIng:
+					strIng = strIng.replace("Parking:",'')
+					print("Parking: " + strIng)
+					parking_details = strIng
+					#builtIn = strIng
+				if "Last sold:" in strIng:
+					strIng = strIng.replace("Last sold:",'')
+					print("Last sold: " + strIng)
+					#builtIn = strIng
+					lastSold = strIng
+				if "Price/sqft:" in strIng:
+					strIng = strIng.replace("Price/sqft:",'')
+					print("Price/sqft: " + strIng)
+					#builtIn = strIng
+					parking_details = strIng
+				if "School district:" in strIng:
+					strIng = strIng.replace("School district:",'')
+					print("School district: " + strIng)
+					#builtIn = strIng
+					school = strIng
+
+		except:
+			self.check_for_captcha(browser)
+			school = "NA"
+			parking_details = "NA"
+			lastSold = "NA"
+
+
+
+		try:
 			elm = browser.find_element_by_id('zestimate-details')
 		except:
 			#print("Other disign page")
-			self.check_for_captcha(browser)
-			return "NA" , "NA", "NA", "NA", "NA", "NA"
-
+			#self.check_for_captcha(browser)
+			return "NA" , "NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA"
 
 		try:
 			elm.click()
@@ -137,12 +212,15 @@ class ZillowSpider:
 			comName = element_text[2]
 			parking = element_text[10]
 
-			return zestimate , zRange, builtIn, builtBy, comName, parking
+			return zestimate , zRange, builtIn, builtBy, comName, parking, school, parking_details, lastSold
 		except:
-			return "NA" , "NA", "NA", "NA", "NA", "NA"
+			return "NA" , "NA", "NA", "NA", "NA", "NA","NA", "NA", "NA"
 
 
 	def main_request(self, elm):
+		school = "NA"
+		parking_details = "NA"
+		lastSold = "NA"
 		elm.click()
 		element_text = elm.text.split()
 		#print(element_text.split())
@@ -151,7 +229,7 @@ class ZillowSpider:
 		elm = browser.find_element_by_xpath("//*[@class='hdp-facts zsg-content-component']") 
 		element_text = elm.text.split('\n')
 		builtIn, builtBy, comName, parking = self.parse_element_text(element_text)
-		return zestimate , zRange, builtIn, builtBy, comName, parking
+		return zestimate , zRange, builtIn, builtBy, comName, parking, school, parking_details, lastSold
 
 
 	def get_one_request(self, browser, url):
@@ -161,6 +239,9 @@ class ZillowSpider:
 		builtBy = "NA"
 		comName = "NA"
 		parking = "NA"
+		school = "NA"
+		parking_details = "NA"
+		lastSold = "NA"
 
 		browser.get(url)
 		browser.implicitly_wait(1)
@@ -174,7 +255,7 @@ class ZillowSpider:
 		try:
 			return self.main_request(elm)	
 		except:
-			return "NA" , "NA", "NA", "NA", "NA", "NA"
+			return "NA" , "NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA"
 
 
 

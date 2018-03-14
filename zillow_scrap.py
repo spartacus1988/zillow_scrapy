@@ -29,9 +29,12 @@ def update_csv_cell(ZillowSpider, browser):
 				current_line.append('builtBy')
 				current_line.append('comName')
 				current_line.append('parking')
+				current_line.append('school')
+				current_line.append('parking_details')
+				current_line.append('lastSold')
 				lines.append(current_line)
 			else:
-				zestimate , zRange, builtIn, builtBy, comName, parking = ZillowSpider.get_one_request(browser, current_line[10])
+				zestimate , zRange, builtIn, builtBy, comName, parking, school, parking_details, lastSold= ZillowSpider.get_one_request(browser, current_line[10])
 				print(current_line[10])
 				current_line.append(zestimate)
 				current_line.append(zRange)
@@ -39,6 +42,9 @@ def update_csv_cell(ZillowSpider, browser):
 				current_line.append(builtBy)
 				current_line.append(comName)
 				current_line.append(parking)
+				current_line.append(school)
+				current_line.append(parking_details)
+				current_line.append(lastSold)
 				lines.append(current_line)
 
 
@@ -46,7 +52,7 @@ def update_csv_cell(ZillowSpider, browser):
 	file_name = "%s_%s.csv" % (str(time.strftime("%Y-%m-%d")),
                            str(time.strftime("%H%M%S")))
 	columns = ["address", "city", "state", "zip", "price", "sqft", "bedrooms",
-           "bathrooms", "days_on_zillow", "sale_type", "url", "zestimate", "zRange", "builtIn", "builtBy", "comName", "parking"]
+           "bathrooms", "days_on_zillow", "sale_type", "url", "zestimate", "zRange", "builtIn", "builtBy", "comName", "parking", "school", "parking_details", "lastSold"]
 	pd.DataFrame(lines, columns = columns).to_csv(file_name, index = False)
 
 
