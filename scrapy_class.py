@@ -57,9 +57,9 @@ class ZillowSpider:
 
 
 	def get_zestimate(self, element_text):
-		print("get_zestimate")
+		#print("get_zestimate")
 		try:
-			print("get_zestimate_first_try")
+			#print("get_zestimate_first_try")
 			listIndex = element_text.index("Zestimate")
 			#print(listIndex)
 			#print(listIndex)
@@ -80,13 +80,13 @@ class ZillowSpider:
 			zRange = element_text[listIndex+1] + element_text[listIndex+2] + element_text[listIndex+3]
 			return zestimate, zRange
 		except:
-			print("get_zestimate_first_except")
+			#print("get_zestimate_first_except")
 			zestimate = "NA"
 			zRange = "NA"
 			return zestimate, zRange
 
 	def parse_element_text(self, element_text):
-		print("parse_element_text")
+		#print("parse_element_text")
 		for strIng in element_text:
 			if "Built in" in strIng:
 				strIng = strIng.replace("Built in",'')
@@ -111,13 +111,13 @@ class ZillowSpider:
 
 
 	def exception_request(self, browser):
-		print("exception_request")
+		#print("exception_request")
 		#print("Other disign page")
 		#####https://www.zillow.com/homes/for_sale//homedetails/295-N-Minnewawa-Ave-Fresno-CA-93727/18759515_zpid/
 		#####https://www.zillow.com/homes/for_sale/2094098284_zpid/globalrelevanceex_sort/29.783524,-95.363388,29.650838,-95.474968_rect/12_zm/
 
 		try:
-			print("exception_request_first_try")
+			#print("exception_request_first_try")
 			elm = browser.find_element_by_xpath("//*[@class='hdp-fact-moreless-toggle za-track-event']") 
 			elm.click()
 			elm = browser.find_element_by_xpath("//*[@class='z-moreless-content hdp-fact-moreless-content']")		
@@ -188,7 +188,7 @@ class ZillowSpider:
 					school = strIng
 
 		except:
-			print("exception_request_first_except")
+			#print("exception_request_first_except")
 			self.check_for_captcha(browser)
 			school = "NA"
 			parking_details = "NA"
@@ -198,16 +198,16 @@ class ZillowSpider:
 
 
 		try:
-			print("exception_request_second_try")
+			#print("exception_request_second_try")
 			elm = browser.find_element_by_id('zestimate-details')
 		except:
-			print("exception_request_second_except")
+			#print("exception_request_second_except")
 			#print("Other disign page")
 			#self.check_for_captcha(browser)
 			return "NA" , "NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA" 
 
 		try:
-			print("exception_request_third_try")
+			#print("exception_request_third_try")
 			elm.click()
 			element_text = elm.text.split()
 			#print(element_text.split())
@@ -228,62 +228,62 @@ class ZillowSpider:
 			comName = element_text[2]
 			parking = element_text[10]
 
-			print(zestimate)
-			print(zRange)
-			print(builtIn)
-			print(builtBy)
-			print(comName)
-			print(parking)
-			print(school)
-			print(parking_details)
-			print(lastSold)
-			print(priceSqft)
+			# print(zestimate)
+			# print(zRange)
+			# print(builtIn)
+			# print(builtBy)
+			# print(comName)
+			# print(parking)
+			# print(school)
+			# print(parking_details)
+			# print(lastSold)
+			# print(priceSqft)
 			
 
 			return zestimate , zRange, builtIn, builtBy, comName, parking, school, parking_details, lastSold, priceSqft
 		except:
-			print("exception_request_third_except")
+			#print("exception_request_third_except")
 			return "NA" , "NA", "NA", "NA", "NA", "NA","NA", "NA", "NA", "NA"
 
 
 	def main_request(self, browser, elm):
-		print("main_request")
+		#print("main_request")
 		school = "NA"
 		parking_details = "NA"
 		lastSold = "NA"
 		priceSqft = "NA"
 		elm.click()
-		print("main_request_after_elm_click")
+		#print("main_request_after_elm_click")
 		element_text = elm.text.split()
-		print(element_text)
+		#print(element_text)
 		#print(element_text.split())
 		#print(element_text)
 
 		zestimate, zRange = self.get_zestimate(element_text)
 		
-		print("main_request_after_get_zestimate")
-		print(zestimate)
-		print(zRange)
+		#print("main_request_after_get_zestimate")
+		#print(zestimate)
+		#print(zRange)
 		elm = browser.find_element_by_xpath("//*[@class='hdp-facts zsg-content-component']") 
 		element_text = elm.text.split('\n')
-		print("main_request_after_find_element_by_xpath")
+		#print("main_request_after_find_element_by_xpath")
 		builtIn, builtBy, comName, parking = self.parse_element_text(element_text)
-		print(zestimate)
-		print(zRange)
-		print(builtIn)
-		print(builtBy)
-		print(comName)
-		print(parking)
-		print(school)
-		print(parking_details)
-		print(lastSold)
-		print(priceSqft)
-		print("main_request_return")
+		# print(zestimate)
+		# print(zRange)
+		# print(builtIn)
+		# print(builtBy)
+		# print(comName)
+		# print(parking)
+		# print(school)
+		# print(parking_details)
+		# print(lastSold)
+		# print(priceSqft)
+		# print("main_request_return")
 		return zestimate , zRange, builtIn, builtBy, comName, parking, school, parking_details, lastSold, priceSqft
 
 
 	def get_one_request(self, browser, url):
-		print("get_one_request")
+		#print("get_one_request")
 		zestimate = "NA"
 		zRange = "NA"
 		builtIn = "NA"
@@ -298,18 +298,18 @@ class ZillowSpider:
 		browser.implicitly_wait(1)
 
 		try:
-			print("get_one_request_first_try")
+			#print("get_one_request_first_try")
 			elm = browser.find_element_by_id('homeValue')
 			#elm = browser.find_element_by_id('home-details-module-zone')
 		except:
-			print("get_one_request_first_except")
+			#print("get_one_request_first_except")
 			return self.exception_request(browser)
 			
 		try:
-			print("get_one_request_second_try")
+			#print("get_one_request_second_try")
 			return self.main_request(browser, elm)	
 		except:
-			print("get_one_request_second_except")
+			#print("get_one_request_second_except")
 			return "NA" , "NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA"
 
 

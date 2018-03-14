@@ -17,9 +17,9 @@ def update_csv_cell(ZillowSpider, browser):
 
 		for current_line in reader:
 			#print(current_line)
-			i+=1
-			if i == 5:
-				break
+			# i+=1
+			# if i == 5:
+			# 	break
 
 			if current_line[10] == 'url':
 				pass
